@@ -54,3 +54,38 @@ function toggleFilteredStations() {
 addStations(stations);
 pickFeaturedStation();
 
+// --- Dropdown City Filter Logic ---
+function getUniqueCities(stations) {
+  const cities = stations.map(station => station.location);
+  return [...new Set(cities)];
+}
+
+function populateCityDropdown() {
+  const cityFilter = document.getElementById('city-filter');
+  if (!cityFilter) return;
+  const cities = getUniqueCities(stations);
+  cities.forEach(city => {
+    const option = document.createElement('option');
+    option.value = city;
+    option.textContent = city;
+    cityFilter.appendChild(option);
+  });
+}
+
+function filterStationsByCity(city) {
+  const filtered = city === 'all' ? stations : stations.filter(station => station.location === city);
+  // Clear current list
+  document.getElementById('station-list').innerHTML = '';
+  addStations(filtered);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  populateCityDropdown();
+  const cityFilter = document.getElementById('city-filter');
+  if (cityFilter) {
+    cityFilter.addEventListener('change', (e) => {
+      filterStationsByCity(e.target.value);
+    });
+  }
+});
+
