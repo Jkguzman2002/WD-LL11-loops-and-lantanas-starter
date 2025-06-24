@@ -1,9 +1,8 @@
 // Initial rendering logic – to be refactored during the lab
 function addStations(stations) {
-  // TODO: Refactor this loop using map() or forEach()
-  for (let i = 0; i < stations.length; i++) {
-    addStationElement(stations[i]);
-  }
+  stations.forEach(station => {
+    addStationElement(station);
+  });
 }
 
 // 🧪 TEAM FEATURES
@@ -21,7 +20,24 @@ function searchStations(query) {
 
 // 🌟 Random Featured Station
 function pickFeaturedStation() {
-  // TODO: Use Math.random to select and display a station
+  // Pick a random station index
+  const randomIndex = Math.floor(Math.random() * stations.length);
+  let featured = null;
+  stations.forEach((station, idx) => {
+    if (idx === randomIndex) {
+      featured = station;
+    }
+  });
+  // Display featured station in the featured-station section
+  const featuredSection = document.getElementById('featured-station');
+  if (featuredSection && featured) {
+    featuredSection.innerHTML = `<h2>Featured Station</h2>
+      <div class="featured-card">
+        <h3>${featured.name}</h3>
+        <p><strong>Location:</strong> ${featured.location}</p>
+        <p><strong>Type:</strong> ${featured.type}</p>
+      </div>`;
+  }
 }
 
 // 🏙️ Group by City
@@ -36,3 +52,5 @@ function toggleFilteredStations() {
 
 // Load stations on page start
 addStations(stations);
+pickFeaturedStation();
+
